@@ -12,7 +12,7 @@ src/
  │    ├── MovieDetail.tsx   # La ficha de la película
  │    ├── Favorites.tsx     # Lista de favoritos
  │    ├── Contact.tsx       # Estática
- │    ├── Legal.tsx         # Estática
+ │    ├── About.tsx         # Estática
  │    └── ErrorPage.tsx     # Página 404
  │
  ├── context/               # El estado global
