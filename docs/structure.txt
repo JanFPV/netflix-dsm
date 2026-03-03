@@ -1,0 +1,26 @@
+src/
+ ├── assets/                # Imágenes locales (logo, iconos)
+ ├── components/            # Componentes reutilizables
+ │    ├── layout/           # Header.tsx, Footer.tsx
+ │    ├── movies/           # MovieCard.tsx, MovieFilter.tsx, MovieList.tsx
+ │    ├── comments/         # CommentForm.tsx, CommentList.tsx
+ │    ├── auth/             # LoginForm.tsx, RegisterForm.tsx
+ │    └── ui/               # Cosas visuales puras (Cargando.tsx, Modal.tsx)
+ │
+ ├── pages/                 # Las vistas completas de cada ruta
+ │    ├── Home.tsx          # El Catálogo
+ │    ├── MovieDetail.tsx   # La ficha de la película
+ │    ├── Favorites.tsx     # Lista de favoritos
+ │    ├── Contact.tsx       # Estática
+ │    ├── Legal.tsx         # Estática
+ │    └── ErrorPage.tsx     # Página 404
+ │
+ ├── context/               # El estado global
+ │    └── AuthContext.tsx   # Para saber quién está logueado en toda la app
+ │
+ ├── types/
+ │    └── index.ts
+ │
+ ├── App.tsx                # Rutas principales (React Router)
+ ├── main.tsx               # Punto de entrada
+ └── index.css              # Estilos globales
