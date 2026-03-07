@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ref, get } from 'firebase/database';
+import { ref, get, set, remove } from 'firebase/database';
 import { db } from '../config/firebase';
+import { useAuth } from '../context/AuthContext';
 import type { Pelicula, PeliculaFirebase, PeliculaTMDB } from '../types';
 
 function MovieDetail() {
-  // Si la URL es /pelicula/star_wars, id valdrá "star_wars"
+  // Si la URL es /pelicula/peli01, id valdrá "peli01"
   const { id } = useParams();
   const [pelicula, setPelicula] = useState<Pelicula | null>(null);
   const [fondoDecorativo, setFondoDecorativo] = useState<string>('');
   const [cargando, setCargando] = useState(true);
+
+  // Obtener usuario
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [esFavorito, setEsFavorito] = useState(false);
 
   useEffect(() => {
     const cargarDetalles = async () => {
@@ -42,6 +48,13 @@ function MovieDetail() {
           if (peliTMDB.backdrop_path) {
             setFondoDecorativo(`https://image.tmdb.org/t/p/original${peliTMDB.backdrop_path}`);
           }
+
+          // Comprobar si es favorito
+          if (user) {
+            const favRef = ref(db, `favoritos/${user.uid}/${id}`);
+            const favSnapshot = await get(favRef);
+            setEsFavorito(favSnapshot.exists());
+          }
         }
       } catch (error) {
         console.error("Error cargando detalles:", error);
@@ -51,10 +64,35 @@ function MovieDetail() {
     };
 
     if (id) cargarDetalles();
-  }, [id]);
+  }, [id, user]);
 
   if (cargando) return <div className="text-center text-white mt-5">Cargando detalles...</div>;
   if (!pelicula) return <div className="text-center text-white mt-5">Película no encontrada.</div>;
+
+  const toggleFavorito = async () => {
+    if (!user) {
+      // Si no está logueado, lo mandamos al login amablemente
+      navigate('/login');
+      return;
+    }
+
+    if (!pelicula) return;
+
+    // Este usuario y esta película concreta
+    const favRef = ref(db, `favoritos/${user.uid}/${pelicula.id}`);
+
+    try {
+      if (esFavorito) {
+        await remove(favRef); // Si ya era favorita, la borramos
+        setEsFavorito(false);
+      } else {
+        await set(favRef, pelicula); // Si no lo era, guardamos el objeto película entero
+        setEsFavorito(true);
+      }
+    } catch (error) {
+      console.error("Error al modificar favoritos:", error);
+    }
+  };
 
   return (
     <div>
@@ -89,8 +127,13 @@ function MovieDetail() {
               <Link to="/" className="btn btn-outline-light">
                 <i className="bi bi-arrow-left me-2"></i> Volver al Catálogo
               </Link>
-              <button className="btn btn-danger">
-                <i className="bi bi-heart me-2"></i> Añadir a Favoritos
+              {/* Botón dinámico de favoritos */}
+              <button
+                onClick={toggleFavorito}
+                className={`btn ${esFavorito ? 'btn-danger' : 'btn-outline-danger'}`}
+              >
+                <i className={`bi ${esFavorito ? 'bi-heart-fill' : 'bi-heart'} me-2`}></i>
+                {esFavorito ? 'Quitar de Favoritos' : 'Añadir a Favoritos'}
               </button>
             </div>
           </div>
