@@ -85,7 +85,7 @@ function MovieList() {
               src={peli.portada_url}
               className="card-img-top"
               alt={peli.titulo}
-              style={{ objectFit: 'cover', height: '350px' }}
+              style={{ aspectRatio: '2/3', objectFit: 'cover' }}
             />
             <div className="card-body d-flex flex-column">
               <h6 className="card-title fw-bold text-truncate">{peli.titulo}</h6>
