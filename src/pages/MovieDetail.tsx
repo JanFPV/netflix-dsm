@@ -61,10 +61,11 @@ function MovieDetail() {
       <div
         className="position-relative d-flex align-items-end"
         style={{
-          height: '400px',
-          backgroundImage: `url(${fondoDecorativo})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
+            height: '400px',
+            backgroundImage: fondoDecorativo ? `url("${fondoDecorativo}")` : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundColor: '#141414'
         }}
       >
         <div className="position-absolute top-0 start-0 w-100 h-100" style={{ background: 'linear-gradient(to top, #141414 10%, transparent 100%)' }}></div>

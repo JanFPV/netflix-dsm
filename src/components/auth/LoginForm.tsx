@@ -30,7 +30,7 @@ function LoginForm() {
 
       <form onSubmit={handleSubmit}>
 
-        <div className="form-floating mb-3 text-dark">
+        <div className="form-floating mb-3">
           <input
             type="email"
             className="form-control"
@@ -43,7 +43,7 @@ function LoginForm() {
           <label htmlFor="floatingEmail">Correo electrónico</label>
         </div>
 
-        <div className="form-floating mb-4 text-dark">
+        <div className="form-floating mb-4">
           <input
             type="password"
             className="form-control"

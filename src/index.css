@@ -1,1 +1,6 @@
-body { background-color: #141414; }
+body {
+  background-color: #141414;
+  color: #ffffff;
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
