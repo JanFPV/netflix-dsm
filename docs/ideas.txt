@@ -1,6 +1,7 @@
 Intentar:
     - La barra de arriba que sea distinta si estas logueado o no
     - La sección de favoritos que no sea clavada, que tenga alguna diferencia con el catálogo en los botones o info que aparece o algo así.
+    - Algo de testing con actions?
 
 Si me da tiempo:
     - Usar TMDB en vez de guardar todos los metadatos (estilo radarr/sonarr/jellyfin)
