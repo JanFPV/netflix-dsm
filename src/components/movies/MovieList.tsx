@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ref, get } from 'firebase/database';
 import { db } from '../../config/firebase';
 import type { Pelicula, PeliculaFirebase, PeliculaTMDB } from '../../types';
-
-// API Key de TMDB
-const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 function MovieList() {
   // Aquí guardamos las películas con datos de Firebase + TMDB
@@ -28,7 +26,7 @@ function MovieList() {
 
             // Por cada una, vamos a TMDB a pedir su póster y sinopsis en Español
             const promesa = axios.get<PeliculaTMDB>(
-              `https://api.themoviedb.org/3/movie/${peliFB.tmdb_id}?language=es-ES&api_key=${TMDB_API_KEY}`
+              `https://api.themoviedb.org/3/movie/${peliFB.tmdb_id}?language=es-ES&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
             ).then(respuesta => {
               const peliTMDB = respuesta.data;
 
@@ -77,7 +75,7 @@ function MovieList() {
     return <h5 className="text-secondary mt-4">No hay películas en el catálogo todavía.</h5>;
   }
 
-  // Si todo ha ido bien, Bootstrap
+  // Si todo ha ido bien, mostrar películas
   return (
     <div className="row g-4 mt-2">
       {peliculas.map((peli) => (
@@ -92,9 +90,9 @@ function MovieList() {
             <div className="card-body d-flex flex-column">
               <h6 className="card-title fw-bold text-truncate">{peli.titulo}</h6>
               <span className="badge bg-danger align-self-start mb-3">{peli.categoria}</span>
-              <button className="btn btn-outline-light btn-sm mt-auto w-100">
+              <Link to={`/pelicula/${peli.id}`} className="btn btn-outline-light btn-sm mt-auto w-100">
                 Ver detalles
-              </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Favorites from './pages/Favorites';
+import MovieDetail from './pages/MovieDetail';
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
             <Route path="/favoritos" element={<Favorites />} />
             <Route path="/about" element={<About />} />
             <Route path="/contacto" element={<Contact />} />
+
+            <Route path="/pelicula/:id" element={<MovieDetail />} />
           </Routes>
         </main>
 
