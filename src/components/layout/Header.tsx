@@ -1,8 +1,14 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 function Header() {
-  const { user, logout } = useAuth();
+const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout(); // Cierra la sesión en Firebase
+    navigate('/');  // Te manda a la página de Inicio
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
@@ -31,7 +37,7 @@ function Header() {
                 <span className="text-light me-3 d-none d-md-block">
                   Hola, <b className="text-danger">{user.email}</b>
                 </span>
-                <button onClick={logout} className="btn btn-outline-light btn-sm">
+                <button onClick={handleLogout} className="btn btn-outline-light btn-sm">
                   Cerrar sesión
                 </button>
               </>
