@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
@@ -6,29 +7,34 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Favorites from './pages/Favorites';
 import MovieDetail from './pages/MovieDetail';
+import LoginForm from './components/auth/LoginForm';
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="d-flex flex-column min-vh-100">
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="d-flex flex-column min-vh-100">
 
-        <Header />
+          <Header />
 
-        <main className="flex-grow-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/favoritos" element={<Favorites />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contacto" element={<Contact />} />
+          <main className="flex-grow-1">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/favoritos" element={<Favorites />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contacto" element={<Contact />} />
 
-            <Route path="/pelicula/:id" element={<MovieDetail />} />
-          </Routes>
-        </main>
+              <Route path="/pelicula/:id" element={<MovieDetail />} />
 
-        <Footer />
+              <Route path="/login" element={<LoginForm />} />
+            </Routes>
+          </main>
 
-      </div>
-    </BrowserRouter>
+          <Footer />
+
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

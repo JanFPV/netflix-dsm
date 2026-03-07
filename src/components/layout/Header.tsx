@@ -1,8 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 function Header() {
+  const { user, logout } = useAuth();
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
       <div className="container">
         <Link className="navbar-brand text-danger fw-bold fs-3" to="/">
           DSM-flix
@@ -15,15 +18,28 @@ function Header() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/">Inicio</Link>
+              <NavLink className="nav-link" to="/">Inicio</NavLink>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/favoritos">Mis Favoritos</Link>
+              <NavLink className="nav-link" to="/favoritos">Favoritos</NavLink>
             </li>
           </ul>
 
-          <div className="d-flex">
-            <button className="btn btn-outline-light btn-sm">Iniciar Sesión</button>
+          <div className="d-flex align-items-center">
+            {user ? (
+              <>
+                <span className="text-light me-3 d-none d-md-block">
+                  Hola, <b className="text-danger">{user.email}</b>
+                </span>
+                <button onClick={logout} className="btn btn-outline-light btn-sm">
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="btn btn-danger btn-sm">
+                Iniciar Sesión
+              </Link>
+            )}
           </div>
         </div>
       </div>
