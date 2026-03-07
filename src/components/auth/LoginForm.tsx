@@ -18,6 +18,7 @@ function LoginForm() {
       await login(email, password);
       navigate('/'); // Si hay éxito, lo mandamos a la portada
     } catch (err) {
+      console.error(err);
       setError('Correo o contraseña incorrectos.');
     }
   };
