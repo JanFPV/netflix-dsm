@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { ref, onValue, push, set } from 'firebase/database';
+import { ref, onValue, push, set, remove } from 'firebase/database';
 import { db } from '../../config/firebase';
 import StarRating from './StarRating';
 import type { Comentario } from '../../types';
@@ -14,7 +14,6 @@ function CommentSection({ movieId }: CommentSectionProps) {
   const [comentarios, setComentarios] = useState<Comentario[]>([]);
 
   // Estados para el formulario nuevo
-  const [alias, setAlias] = useState('');
   const [texto, setTexto] = useState('');
   const [rating, setRating] = useState(0);
   const [enviando, setEnviando] = useState(false);
@@ -37,13 +36,17 @@ function CommentSection({ movieId }: CommentSectionProps) {
     return () => unsubscribe();
   }, [movieId]);
 
-  // Guardar un nuevo comentario
+  const usuarioYaComento = user ? comentarios.some(c => c.usuario_id === user.uid) : false;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || rating === 0) return;
+    if (!user || rating === 0 || usuarioYaComento) return;
 
     setEnviando(true);
     try {
+      // Alias a partir del email
+      const aliasEmail = user.email ? user.email.split('@')[0] : 'Usuario';
+
       const commentsRef = ref(db, `comentarios/${movieId}`);
       const nuevoComentarioRef = push(commentsRef);
 
@@ -51,7 +54,7 @@ function CommentSection({ movieId }: CommentSectionProps) {
         id: nuevoComentarioRef.key as string,
         usuario_id: user.uid,
         email: user.email || 'sin-email',
-        alias: alias || 'Anónimo',
+        alias: aliasEmail,
         rating: rating,
         comentario: texto,
         fecha: Date.now(),
@@ -62,11 +65,21 @@ function CommentSection({ movieId }: CommentSectionProps) {
       // Limpiar el formulario tras enviar
       setTexto('');
       setRating(0);
-      setAlias('');
     } catch (error) {
-      console.error("Error al guardar el comentario:", error);
+      console.error("Error al guardar:", error);
     } finally {
       setEnviando(false);
+    }
+  };
+
+  // Borrar tu propia reseña
+  const borrarComentario = async (idComentario: string) => {
+    if (window.confirm("¿Seguro que quieres borrar tu reseña?")) {
+      try {
+        await remove(ref(db, `comentarios/${movieId}/${idComentario}`));
+      } catch (error) {
+        console.error("Error al borrar:", error);
+      }
     }
   };
 
@@ -75,7 +88,17 @@ function CommentSection({ movieId }: CommentSectionProps) {
       <h4 className="mb-4">Reseñas y Comentarios</h4>
 
       {/* Formulario */}
-      {user ? (
+      {!user ? (
+        <div className="alert alert-dark border-secondary text-center">
+          Debes <a href="/login" className="text-danger fw-bold">iniciar sesión</a> para dejar una reseña.
+        </div>
+      ) : usuarioYaComento ? (
+        // Si ya comentó, no le dejamos
+        <div className="alert bg-dark text-white border-secondary text-center shadow-sm">
+          <i className="bi bi-check-circle-fill text-success me-2"></i>
+          Ya has publicado una reseña para esta película. ¡Gracias por tu aportación!
+        </div>
+      ) : (
         <div className="card bg-dark text-white border-secondary mb-4 p-3 shadow-sm">
           <form onSubmit={handleSubmit}>
             <div className="d-flex align-items-center mb-3 gap-2">
@@ -84,25 +107,14 @@ function CommentSection({ movieId }: CommentSectionProps) {
               {rating === 0 && <span className="text-danger small ms-2">* Obligatorio</span>}
             </div>
 
-            <div className="row g-2 mb-3">
-              <div className="col-md-4">
-                <input
-                  type="text"
-                  className="form-control bg-secondary text-white border-0"
-                  placeholder="Tu alias"
-                  value={alias}
-                  onChange={(e) => setAlias(e.target.value)}
-                />
-              </div>
-              <div className="col-md-8">
-                <input
-                  type="text"
-                  className="form-control bg-secondary text-white border-0"
-                  placeholder="¿Qué te ha parecido la película? (Opcional)"
-                  value={texto}
-                  onChange={(e) => setTexto(e.target.value)}
-                />
-              </div>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control bg-secondary text-white border-0"
+                placeholder="¿Qué te ha parecido la película? (Opcional)"
+                value={texto}
+                onChange={(e) => setTexto(e.target.value)}
+              />
             </div>
 
             <button
@@ -114,25 +126,33 @@ function CommentSection({ movieId }: CommentSectionProps) {
             </button>
           </form>
         </div>
-      ) : (
-        <div className="alert alert-dark border-secondary text-center">
-          Debes <a href="/login" className="text-danger fw-bold">iniciar sesión</a> para dejar una reseña.
-        </div>
       )}
 
-      {/* Lista de comentarios */}
+      {/* Comentarios */}
       <div className="d-flex flex-column gap-3">
         {comentarios.length === 0 ? (
           <p className="text-muted">No hay reseñas todavía. ¡Sé el primero en opinar!</p>
         ) : (
           comentarios.map((c) => (
-            <div key={c.id} className="bg-dark p-3 rounded border border-secondary">
-              <div className="d-flex justify-content-between align-items-center mb-2">
+            <div key={c.id} className="bg-dark p-3 rounded border border-secondary position-relative">
+
+              {/* Botón de borrar */}
+              {c.usuario_id === user?.uid && (
+                <button
+                  onClick={() => borrarComentario(c.id)}
+                  className="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-2 border-0"
+                  title="Borrar mi reseña"
+                >
+                  <i className="bi bi-trash3-fill"></i>
+                </button>
+              )}
+
+              <div className="d-flex justify-content-between align-items-center mb-2 pe-4">
                 <div className="d-flex align-items-center gap-2">
-                  <span className="fw-bold text-white">{c.alias}</span>
+                  <span className="fw-bold text-white">@{c.alias}</span>
                   <StarRating rating={c.rating} tamaño="sm" />
                 </div>
-                <span className="text-muted small">
+                <span className="text-muted small d-none d-sm-inline">
                   {new Date(c.fecha).toLocaleDateString()}
                 </span>
               </div>
