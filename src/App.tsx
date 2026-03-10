@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Favorites from './pages/Favorites';
 import MovieDetail from './pages/MovieDetail';
 import LoginForm from './components/auth/LoginForm';
+import RegisterForm from './components/auth/RegisterForm';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path="/pelicula/:id" element={<MovieDetail />} />
 
               <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<RegisterForm />} />
             </Routes>
           </main>
 
