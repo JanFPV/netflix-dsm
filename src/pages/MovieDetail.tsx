@@ -6,10 +6,13 @@ import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
 import type { Pelicula, PeliculaFirebase, PeliculaTMDB } from '../types';
 import CommentSection from '../components/movies/CommentSection';
+import StarRating from '../components/movies/StarRating';
+import { useMovieStats } from '../hooks/useMovieStats';
 
 function MovieDetail() {
   // Si la URL es /pelicula/peli01, id valdrá "peli01"
   const { id } = useParams();
+  const { ratingMedia, totalReviews } = useMovieStats(id as string);
   const [pelicula, setPelicula] = useState<Pelicula | null>(null);
   const [fondoDecorativo, setFondoDecorativo] = useState<string>('');
   const [cargando, setCargando] = useState(true);
@@ -124,7 +127,7 @@ function MovieDetail() {
             <h4 className="fw-bold mb-3">Sinopsis</h4>
             <p className="lead text-secondary">{pelicula.sinopsis || "No hay sinopsis disponible."}</p>
 
-            <div className="d-flex gap-3 mt-4">
+            <div className="d-flex align-items-center flex-wrap gap-3 mt-4">
               <Link to="/" className="btn btn-outline-light">
                 <i className="bi bi-arrow-left me-2"></i> Volver al Catálogo
               </Link>
@@ -136,6 +139,13 @@ function MovieDetail() {
                 <i className={`bi ${esFavorito ? 'bi-heart-fill' : 'bi-heart'} me-2`}></i>
                 {esFavorito ? 'Quitar de Favoritos' : 'Añadir a Favoritos'}
               </button>
+              <div className="d-flex align-items-center gap-2 bg-black bg-opacity-50 px-3 py-2 rounded border border-secondary ms-md-auto">
+                <StarRating rating={ratingMedia} tamaño="sm" />
+                <span className="text-warning fw-bold">{ratingMedia > 0 ? ratingMedia.toFixed(1) : 'S/N'}</span>
+                <div className="text-secondary ms-2 border-start border-secondary ps-2">
+                  <i className="bi bi-chat-left-text me-1"></i> {totalReviews}
+                </div>
+              </div>
             </div>
           </div>
         </div>
