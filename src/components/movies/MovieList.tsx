@@ -1,11 +1,15 @@
+import MovieCard from './MovieCard';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ref, get } from 'firebase/database';
 import { db } from '../../config/firebase';
 import type { Pelicula, PeliculaFirebase, PeliculaTMDB } from '../../types';
 
-function MovieList() {
+interface MovieListProps {
+  filtro: string;
+}
+
+function MovieList({ filtro }: MovieListProps) {
   // Aquí guardamos las películas con datos de Firebase + TMDB
   const [peliculas, setPeliculas] = useState<Pelicula[]>([]);
   const [cargando, setCargando] = useState(true);
@@ -75,28 +79,23 @@ function MovieList() {
     return <h5 className="text-secondary mt-4">No hay películas en el catálogo todavía.</h5>;
   }
 
+  // Filtramos la lista
+  const peliculasFiltradas = filtro === 'Todas'
+    ? peliculas
+    : peliculas.filter((peli) => peli.categoria === filtro);
+
   // Si todo ha ido bien, mostrar películas
   return (
     <div className="row g-4 mt-2">
-      {peliculas.map((peli) => (
-        <div key={peli.id} className="col-6 col-md-4 col-lg-3">
-          <div className="card bg-dark text-white h-100 border-secondary shadow-sm hover-efecto">
-            <img
-              src={peli.portada_url}
-              className="card-img-top"
-              alt={peli.titulo}
-              style={{ aspectRatio: '2/3', objectFit: 'cover' }}
-            />
-            <div className="card-body d-flex flex-column">
-              <h6 className="card-title fw-bold text-truncate">{peli.titulo}</h6>
-              <span className="badge bg-danger align-self-start mb-3">{peli.categoria}</span>
-              <Link to={`/pelicula/${peli.id}`} className="btn btn-outline-light btn-sm mt-auto w-100">
-                Ver detalles
-              </Link>
-            </div>
+      {peliculasFiltradas.length === 0 ? (
+        <h5 className="text-secondary mt-4">No hay películas de {filtro} todavía.</h5>
+      ) : (
+        peliculasFiltradas.map((peli) => (
+          <div key={peli.id} className="col-6 col-md-4 col-lg-3">
+            <MovieCard pelicula={peli} />
           </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 }
