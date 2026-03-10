@@ -23,8 +23,11 @@ export interface Pelicula {
 }
 
 export interface Comentario {
-  id?: string;
-  usuarioEmail: string;
-  texto: string;
-  fecha: string;
+  id: string;
+  usuario_id: string;
+  email: string;
+  alias: string;
+  rating: number;
+  comentario?: string; // Opcional
+  fecha: number;
 }

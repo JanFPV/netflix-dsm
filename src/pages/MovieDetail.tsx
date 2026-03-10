@@ -5,6 +5,7 @@ import { ref, get, set, remove } from 'firebase/database';
 import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
 import type { Pelicula, PeliculaFirebase, PeliculaTMDB } from '../types';
+import CommentSection from '../components/movies/CommentSection';
 
 function MovieDetail() {
   // Si la URL es /pelicula/peli01, id valdrá "peli01"
@@ -138,6 +139,7 @@ function MovieDetail() {
             </div>
           </div>
         </div>
+        <CommentSection movieId={id as string} />
       </div>
     </div>
   );
