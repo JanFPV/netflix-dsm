@@ -6,6 +6,7 @@ function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [cargando, setCargando] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate(); // Para redirigir al usuario tras loguearse
@@ -15,11 +16,20 @@ function LoginForm() {
     setError(''); // Limpiamos errores previos
 
     try {
+      setCargando(true);
       await login(email, password);
       navigate('/'); // Si hay éxito, lo mandamos a la portada
-    } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.error(err);
-      setError('Correo o contraseña incorrectos.');
+      // Capturamos el error especial que acabamos de crear en el Context
+      if (err.message === "EMAIL_NO_VERIFICADO") {
+        setError('⚠️ Tu cuenta no está activada. Por favor, revisa tu correo y haz clic en el enlace de verificación.');
+      } else {
+        setError('Error al iniciar sesión. Comprueba tus credenciales.');
+      }
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -57,14 +67,18 @@ function LoginForm() {
           <label htmlFor="floatingPassword">Contraseña</label>
         </div>
 
-        <button type="submit" className="btn btn-danger w-100 py-2 fw-bold fs-5">
-          Entrar a DSM-flix
-        </button>
+        <button
+        type="submit"
+        className="btn btn-danger w-100 py-2 fw-bold"
+        disabled={cargando}
+      >
+        {cargando ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+      </button>
       </form>
       <div className="text-center mt-4">
         <span className="text-secondary">¿Primera vez en DSM-flix? </span>
         <Link to="/register" className="text-white fw-bold text-decoration-none">
-          Suscríbete ya.
+          Crea tu cuenta.
         </Link>
       </div>
     </div>

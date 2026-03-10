@@ -19,6 +19,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth debe usarse dentro de un AuthProvider");
@@ -38,7 +39,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, pass: string) => {
-    await signInWithEmailAndPassword(auth, email, pass);
+    // Iniciar sesión con Firebase
+    const credenciales = await signInWithEmailAndPassword(auth, email, pass);
+
+    // Comprobar si el correo está verificado
+    if (!credenciales.user.emailVerified) {
+      await signOut(auth);
+      // Error específico para el formulario
+      throw new Error("EMAIL_NO_VERIFICADO");
+    }
   };
 
   const logout = async () => {
@@ -46,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const register = async (email: string, pass: string) => {
+    // Crear la cuenta en Firebase
     const credenciales = await createUserWithEmailAndPassword(auth, email, pass);
 
     // Mandar email automático de confirmación
