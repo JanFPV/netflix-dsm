@@ -22,7 +22,9 @@ jobs:
           echo "VITE_FIREBASE_DATABASE_URL=${{ secrets.VITE_FIREBASE_DATABASE_URL }}" >> .env
           echo "VITE_TMDB_API_KEY=${{ secrets.VITE_TMDB_API_KEY }}" >> .env
           echo "VITE_TMDB_API_READ_ACCESS"$"=${{ secrets.VITE_TMDB_API_READ_ACCESS }}" >> .env
-      - run: npm install && npm run build
+      - run: npm install
+      - run: npm run test
+      - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
