@@ -3,28 +3,24 @@ import { useAuth } from '../context/AuthContext';
 import { ref, onValue } from 'firebase/database';
 import { db } from '../config/firebase';
 import { Link } from 'react-router-dom';
+import MovieCard from '../components/movies/MovieCard';
 import type { Pelicula } from '../types';
 
 function Favorites() {
-  const { user } = useAuth(); // Sacamos al usuario logueado
+  const { user } = useAuth();
   const [favoritos, setFavoritos] = useState<Pelicula[]>([]);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
+    if (!user) return;
 
     const favRef = ref(db, `favoritos/${user.uid}`);
 
     const unsubscribe = onValue(favRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
-        // Convertir a un array fácil de leer
-        const listaFavoritos = Object.values(data) as Pelicula[];
-        setFavoritos(listaFavoritos);
+        setFavoritos(Object.values(data) as Pelicula[]);
       } else {
-        // Si no hay datos, ponemos el array vacío
         setFavoritos([]);
       }
       setCargando(false);
@@ -64,23 +60,10 @@ function Favorites() {
     <div className="container mt-4">
       <h2 className="mb-4">Mis Películas Favoritas <i className="bi bi-heart-fill text-danger"></i></h2>
 
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <div className="row g-4 mt-2">
         {favoritos.map((peli) => (
-          <div key={peli.id} className="col">
-            <div className="card h-100 bg-dark text-white border-secondary shadow-sm">
-              <img
-                src={peli.portada_url}
-                className="card-img-top"
-                alt={peli.titulo}
-                style={{ aspectRatio: '2/3', objectFit: 'cover' }}
-              />
-              <div className="card-body d-flex flex-column">
-                <h6 className="card-title text-truncate" title={peli.titulo}>{peli.titulo}</h6>
-                <Link to={`/pelicula/${peli.id}`} className="btn btn-outline-danger btn-sm mt-auto w-100">
-                  Ver detalles
-                </Link>
-              </div>
-            </div>
+          <div key={peli.id} className="col-6 col-md-4 col-lg-3">
+            <MovieCard pelicula={peli} />
           </div>
         ))}
       </div>
