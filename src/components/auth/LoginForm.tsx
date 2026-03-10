@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -61,6 +61,12 @@ function LoginForm() {
           Entrar a DSM-flix
         </button>
       </form>
+      <div className="text-center mt-4">
+        <span className="text-secondary">¿Primera vez en DSM-flix? </span>
+        <Link to="/register" className="text-white fw-bold text-decoration-none">
+          Suscríbete ya.
+        </Link>
+      </div>
     </div>
   );
 }
