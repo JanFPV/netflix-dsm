@@ -8,7 +8,7 @@ function Footer() {
 
           <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
             <p className="mb-0">
-              &copy; {new Date().getFullYear()} DSM-flix. Proyecto de React.
+              &copy; {new Date().getFullYear()} DSM-flix. Hecho en React.
             </p>
           </div>
 

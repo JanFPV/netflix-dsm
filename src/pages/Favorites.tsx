@@ -47,7 +47,7 @@ function Favorites() {
   if (favoritos.length === 0) {
     return (
       <div className="container mt-5 text-center">
-        <h2 className="mb-4">Mis Películas Favoritas <i className="bi bi-heart-fill text-danger"></i></h2>
+        <h2 className="mb-4">Mis Películas Favoritas</h2>
         <div className="alert alert-dark d-inline-block border-secondary">
           Aún no tienes películas favoritas. ¡Ve al catálogo y añade algunas!
         </div>
@@ -58,7 +58,7 @@ function Favorites() {
   // Con favoritos
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Mis Películas Favoritas <i className="bi bi-heart-fill text-danger"></i></h2>
+      <h2 className="mb-4">Mis Películas Favoritas</h2>
 
       <div className="row g-4 mt-2">
         {favoritos.map((peli) => (

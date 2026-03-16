@@ -24,7 +24,7 @@ function LoginForm() {
       console.error(err);
       // Capturamos el error especial que acabamos de crear en el Context
       if (err.message === "EMAIL_NO_VERIFICADO") {
-        setError('⚠️ Tu cuenta no está activada. Por favor, revisa tu correo y haz clic en el enlace de verificación.');
+        setError('Tu cuenta no está activada. Por favor, revisa tu correo y haz clic en el enlace de verificación.');
       } else {
         setError('Error al iniciar sesión. Comprueba tus credenciales.');
       }

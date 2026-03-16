@@ -13,8 +13,13 @@ const { user, logout } = useAuth();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
       <div className="container">
-        <Link className="navbar-brand text-danger fw-bold fs-3" to="/">
-          DSM-flix
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <img
+            src="/logo.png"
+            alt="DSM-flix Logo híbrido Netflix-UPNA"
+            height="50"
+            className="d-inline-block align-top"
+          />
         </Link>
 
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -29,6 +34,12 @@ const { user, logout } = useAuth();
             <li className="nav-item">
               <NavLink className="nav-link" to="/favoritos">Favoritos</NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/about">Sobre nosotros</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/contacto">Contacto</NavLink>
+            </li>
           </ul>
 
           <div className="d-flex align-items-center">
@@ -42,9 +53,14 @@ const { user, logout } = useAuth();
                 </button>
               </>
             ) : (
-              <Link to="/login" className="btn btn-danger btn-sm">
-                Iniciar Sesión
-              </Link>
+              <div className="d-flex gap-2">
+                <Link to="/register" className="btn btn-outline-danger btn-sm">
+                  Crear Cuenta
+                </Link>
+                <Link to="/login" className="btn btn-danger btn-sm">
+                  Iniciar Sesión
+                </Link>
+              </div>
             )}
           </div>
         </div>
