@@ -1,6 +1,7 @@
 // src/types/index.ts
 
 export interface PeliculaFirebase {
+  id?: string;
   tmdb_id: number;
   categoria: string;
 }
