@@ -141,7 +141,7 @@ function MovieDetail() {
               </button>
               <div className="d-flex align-items-center gap-2 bg-black bg-opacity-50 px-3 py-2 rounded border border-secondary ms-md-auto">
                 <StarRating rating={ratingMedia} tamaño="sm" />
-                <span className="text-warning fw-bold">{ratingMedia > 0 ? ratingMedia.toFixed(1) : 'S/N'}</span>
+                <span className="text-warning fw-bold">{ratingMedia > 0 ? ratingMedia.toFixed(1) : '-'}</span>
                 <div className="text-secondary ms-2 border-start border-secondary ps-2">
                   <i className="bi bi-chat-left-text me-1"></i> {totalReviews}
                 </div>

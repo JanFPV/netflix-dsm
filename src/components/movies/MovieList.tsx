@@ -69,7 +69,7 @@ function MovieList({ filtro }: MovieListProps) {
     return (
       <div className="text-center text-white mt-5">
         <div className="spinner-border text-danger mb-3" role="status"></div>
-        <h5>Cargando catálogo... 🍿</h5>
+        <h5>Cargando catálogo...</h5>
       </div>
     );
   }
