@@ -17,7 +17,7 @@ const { user, logout } = useAuth();
           <img
             src="/logo.png"
             alt="DSM-flix Logo híbrido Netflix-UPNA"
-            height="80"
+            height="50"
             className="d-inline-block align-top"
           />
         </Link>
@@ -33,6 +33,12 @@ const { user, logout } = useAuth();
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/favoritos">Favoritos</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/about">Sobre nosotros</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/contacto">Contacto</NavLink>
             </li>
           </ul>
 
