@@ -13,8 +13,13 @@ const { user, logout } = useAuth();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
       <div className="container">
-        <Link className="navbar-brand text-danger fw-bold fs-3" to="/">
-          DSM-flix
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <img
+            src="/logo.png"
+            alt="DSM-flix Logo híbrido Netflix-UPNA"
+            height="80"
+            className="d-inline-block align-top"
+          />
         </Link>
 
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
