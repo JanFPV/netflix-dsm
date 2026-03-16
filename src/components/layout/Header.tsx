@@ -53,9 +53,14 @@ const { user, logout } = useAuth();
                 </button>
               </>
             ) : (
-              <Link to="/login" className="btn btn-danger btn-sm">
-                Iniciar Sesión
-              </Link>
+              <div className="d-flex gap-2">
+                <Link to="/register" className="btn btn-outline-danger btn-sm">
+                  Crear Cuenta
+                </Link>
+                <Link to="/login" className="btn btn-danger btn-sm">
+                  Iniciar Sesión
+                </Link>
+              </div>
             )}
           </div>
         </div>
