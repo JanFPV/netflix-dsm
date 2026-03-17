@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ref, get, set, remove } from 'firebase/database';
 import { db } from '../config/firebase';
@@ -86,11 +86,15 @@ function MovieDetail() {
     const favRef = ref(db, `favoritos/${user.uid}/${pelicula.id}`);
 
     try {
-      if (esFavorito) {
+if (esFavorito) {
         await remove(favRef); // Si ya era favorita, la borramos
         setEsFavorito(false);
       } else {
-        await set(favRef, pelicula); // Si no lo era, guardamos el objeto película entero
+        await set(favRef, {
+          id: pelicula.id,
+          tmdb_id: pelicula.tmdb_id,
+          categoria: pelicula.categoria
+        });
         setEsFavorito(true);
       }
     } catch (error) {
@@ -128,9 +132,9 @@ function MovieDetail() {
             <p className="lead text-secondary">{pelicula.sinopsis || "No hay sinopsis disponible."}</p>
 
             <div className="d-flex align-items-center flex-wrap gap-3 mt-4">
-              <Link to="/" className="btn btn-outline-light">
-                <i className="bi bi-arrow-left me-2"></i> Volver al Catálogo
-              </Link>
+              <button onClick={() => navigate(-1)} className="btn btn-outline-light">
+                <i className="bi bi-arrow-left me-2"></i> Volver
+              </button>
               {/* Botón dinámico de favoritos */}
               <button
                 onClick={toggleFavorito}
