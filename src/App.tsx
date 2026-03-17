@@ -9,6 +9,7 @@ import Favorites from './pages/Favorites';
 import MovieDetail from './pages/MovieDetail';
 import LoginForm from './components/auth/LoginForm';
 import RegisterForm from './components/auth/RegisterForm';
+import ErrorPage from './pages/ErrorPage';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
 
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
+
+              <Route path="*" element={<ErrorPage />} />
             </Routes>
           </main>
 
