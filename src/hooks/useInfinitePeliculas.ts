@@ -13,6 +13,7 @@ export function useInfinitePeliculas(tamanoLote: number = 12) {
     // Si ya estamos cargando o no hay más, salimos
     if (cargando || !hayMas) return;
 
+    console.log(`[FIREBASE] Pidiendo 12 películas. Empezando después de ID: ${ultimoId || 'el principio'}`);
     setCargando(true);
     try {
       // Referencia base a peliculas
@@ -77,11 +78,13 @@ export function useInfinitePeliculas(tamanoLote: number = 12) {
 
   // Cargar el primer lote automáticamente al montar el hook
   useEffect(() => {
+    console.log("[HOOK] Inicializando y pidiendo primera página...");
     setPeliculas([]);
     setUltimoId(null);
     setHayMas(true);
     cargarLote();
-  }, [tamanoLote, cargarLote]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tamanoLote]);
 
   return {
     peliculas,
