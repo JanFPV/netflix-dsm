@@ -19,7 +19,7 @@ function Header() {
         <Link className="navbar-brand d-flex align-items-center" to="/">
           <img
             src="/logo.png"
-            alt="DSM-flix Logo híbrido Netflix-UPNA"
+            alt="DSM-flix"
             height="50"
             className="d-inline-block align-top"
           />
