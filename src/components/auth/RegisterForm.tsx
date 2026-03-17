@@ -45,7 +45,8 @@ function RegisterForm() {
           <h3 className="mt-3">¡Cuenta creada!</h3>
           <p className="mt-2 text-secondary">
             Te hemos enviado un correo electrónico a <strong>{email}</strong>.
-            Por favor, revisa tu bandeja de entrada (o la carpeta de spam) y haz clic en el enlace para activar tu cuenta.
+           Por favor, revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.
+          <strong>IMPORTANTE: </strong>Tenemos constancia de que los correos electrónicos se están marcando como spam. Revisa la carpeta de spam si no te ha llegado.
           </p>
           <Link to="/login" className="btn btn-danger mt-3 w-100">
             Ir a Iniciar Sesión
