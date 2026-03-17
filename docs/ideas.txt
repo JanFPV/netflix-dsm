@@ -1,15 +1,13 @@
-Intentar:
+Implementadas:
     - La barra de arriba que sea distinta si estas logueado o no
-    - La sección de favoritos que no sea clavada, que tenga alguna diferencia con el catálogo en los botones o info que aparece o algo así.
-    - Algo de testing con actions? HECHO
+    - Algo de testing con actions
+    - Desplegable para cerrar sesión en el usuario
+    - Usar TMDB en vez de guardar todos los metadatos (estilo radarr/sonarr/jellyfin)
+
+Por hacer:
     - Eliminar // eslint-disable-next-line (supongo que son malas prácticas)
     - Añadir un "ordenar por" en las pelis
-    - Desplegable para cerrar sesión en el usuario
-    - Botón de busqueda y buscador en realtime
-
-Si me da tiempo:
-    - Usar TMDB en vez de guardar todos los metadatos (estilo radarr/sonarr/jellyfin)
-    - repaso a la estetica de la webapp
+    - Botón de busqueda y buscador en tiempo real
     - Poner webapp en varios idiomas (EUS/EN) pero de manera elegante
     - Botón para togglear modo lista o mosaico
     - Pensar alguna idea de radarr/sonarr/jellyfin
