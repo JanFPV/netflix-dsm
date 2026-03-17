@@ -2,10 +2,8 @@ src/
  ├── assets/                # Imágenes locales (logo, iconos)
  ├── components/            # Componentes reutilizables
  │    ├── layout/           # Header.tsx, Footer.tsx
- │    ├── movies/           # MovieCard.tsx, MovieFilter.tsx, MovieList.tsx
- │    ├── comments/         # CommentForm.tsx, CommentList.tsx
- │    ├── auth/             # LoginForm.tsx, RegisterForm.tsx
- │    └── ui/               # Cosas visuales puras (Cargando.tsx, Modal.tsx)
+ │    ├── movies/           # MovieCard.tsx, MovieFilter.tsx, MovieList.tsx, CommentSection.tsx, StarRating.tsx
+ │    └── auth/             # LoginForm.tsx, RegisterForm.tsx
  │
  ├── pages/                 # Las vistas completas de cada ruta
  │    ├── Home.tsx          # El Catálogo
@@ -18,8 +16,15 @@ src/
  ├── context/               # El estado global
  │    └── AuthContext.tsx   # Para saber quién está logueado en toda la app
  │
+ ├── hooks/                 # Hooks personalizados
+ │    ├── useInfinitePeliculas.ts
+ │    └── useMovieStats.ts
+ │
  ├── types/
  │    └── index.ts
+ │
+ ├── config/
+ │    └── firebase.ts       # Configuración y conexión con Firebase
  │
  ├── App.tsx                # Rutas principales (React Router)
  ├── main.tsx               # Punto de entrada
