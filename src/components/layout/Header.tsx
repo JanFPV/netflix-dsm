@@ -2,13 +2,16 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 function Header() {
-const { user, logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout(); // Cierra la sesión en Firebase
     navigate('/');  // Te manda a la página de Inicio
   };
+
+  // Extraemos la parte anterior al @ del email para el nombre de usuario corto
+  const username = user?.email ? user.email.split('@')[0] : 'usuario';
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
@@ -44,14 +47,37 @@ const { user, logout } = useAuth();
 
           <div className="d-flex align-items-center">
             {user ? (
-              <>
-                <span className="text-light me-3 d-none d-md-block">
-                  Hola, <b className="text-danger">{user.email}</b>
-                </span>
-                <button onClick={handleLogout} className="btn btn-outline-light btn-sm">
-                  Cerrar sesión
+              <div className="dropdown">
+                <button
+                  className="btn btn-dark dropdown-toggle text-light d-flex align-items-center gap-2 border-0"
+                  type="button"
+                  id="userDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <div
+                    className="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center fw-bold"
+                    style={{ width: '32px', height: '32px', fontSize: '1.2rem' }}
+                  >
+                    {username.charAt(0).toUpperCase()}
+                  </div>
+                  <span>
+                    Hola, <b className="text-danger">@{username}</b>
+                  </span>
                 </button>
-              </>
+
+                <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-secondary mt-2" aria-labelledby="userDropdown">
+                  <li className="px-3 py-2 text-muted small border-bottom border-secondary mb-1">
+                    Conectado como:<br/>
+                    <strong className="text-light">{user.email}</strong>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout} className="dropdown-item text-danger d-flex align-items-center gap-2 mt-1">
+                      <i className="bi bi-box-arrow-right"></i> Cerrar sesión
+                    </button>
+                  </li>
+                </ul>
+              </div>
             ) : (
               <div className="d-flex gap-2">
                 <Link to="/register" className="btn btn-outline-danger btn-sm">
