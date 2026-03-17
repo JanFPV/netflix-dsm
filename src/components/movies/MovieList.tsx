@@ -16,11 +16,15 @@ function MovieList({ filtro }: MovieListProps) {
     cargando: cargandoFirebase,
     cargarMas,
     hayMas
-  } = useInfinitePeliculas(12);
+  } = useInfinitePeliculas(12, filtro);
 
   // Aquí guardamos las películas con datos de Firebase + TMDB
   const [peliculasCompletas, setPeliculasCompletas] = useState<Pelicula[]>([]);
   const [cargandoTMDB, setCargandoTMDB] = useState(false);
+
+  useEffect(() => {
+    setPeliculasCompletas([]); // Vaciar la pantalla al cambiar de botón
+  }, [filtro]);
 
   // Sincronizar TMDB
   useEffect(() => {
@@ -80,10 +84,6 @@ function MovieList({ filtro }: MovieListProps) {
     },
     [cargandoFirebase, cargandoTMDB, hayMas, cargarMas]
   );
-  // Filtramos sobre el array que tiene los datos completos
-  const peliculasFiltradas = filtro === 'Todas'
-    ? peliculasCompletas
-    : peliculasCompletas.filter((peli) => peli.categoria === filtro);
 
   // Pantalla de carga inicial (solo si está totalmente vacío)
   if (peliculasCompletas.length === 0 && (cargandoFirebase || cargandoTMDB)) {
@@ -98,10 +98,10 @@ function MovieList({ filtro }: MovieListProps) {
   return (
     <div className="mt-2">
       <div className="row g-4">
-        {peliculasFiltradas.length === 0 && !cargandoFirebase && !cargandoTMDB ? (
+        {peliculasCompletas.length === 0 && !cargandoFirebase && !cargandoTMDB ? (
           <h5 className="text-secondary mt-4">No hay películas de {filtro} todavía.</h5>
         ) : (
-          peliculasFiltradas.map((peli) => (
+          peliculasCompletas.map((peli) => (
             <div key={peli.id} className="col-6 col-md-4 col-lg-3">
               <MovieCard pelicula={peli} />
             </div>

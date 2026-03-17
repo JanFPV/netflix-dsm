@@ -1,33 +1,41 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ref, query, orderByKey, limitToFirst, startAfter, get } from 'firebase/database';
-import { db } from '../config/firebase';
+import { ref, query, orderByKey, orderByChild, limitToFirst, startAfter, startAt, endAt, get } from 'firebase/database';import { db } from '../config/firebase';
 import type { PeliculaFirebase } from '../types';
 
-export function useInfinitePeliculas(tamanoLote: number = 12) {
+export function useInfinitePeliculas(tamanoLote: number = 12, filtro: string = 'Todas') {
   const [peliculas, setPeliculas] = useState<PeliculaFirebase[]>([]);
   const [cargando, setCargando] = useState(false);
   const [ultimoId, setUltimoId] = useState<string | null>(null);
   const [hayMas, setHayMas] = useState(true);
 
-  const cargarLote = useCallback(async () => {
-    // Si ya estamos cargando o no hay más, salimos
-    if (cargando || !hayMas) return;
+  const cargarLote = useCallback(async (esReset: boolean = false) => {
+    const idActual = esReset ? null : ultimoId;
+    const hayMasActual = esReset ? true : hayMas;
 
+    if (cargando || !hayMasActual) return;
+
+    console.log(`[FIREBASE] Pidiendo 12 películas. Filtro: ${filtro}. ID: ${idActual || 'el principio'}`);
     setCargando(true);
     try {
       // Referencia base a peliculas
       const peliculasRef = ref(db, 'peliculas');
 
-      // Construir la consulta base
-      let consulta = query(peliculasRef, orderByKey());
+      let consulta;
 
-      // Si no es la primera carga, empezamos después  del último ID
-      if (ultimoId) {
-        consulta = query(consulta, startAfter(ultimoId));
+      if (filtro === 'Todas') {
+        if (idActual) {
+          consulta = query(peliculasRef, orderByKey(), startAfter(idActual), limitToFirst(tamanoLote + 1));
+        } else {
+          consulta = query(peliculasRef, orderByKey(), limitToFirst(tamanoLote + 1));
+        }
+      } else {
+        // Filtramos por categoría exacta
+        if (idActual) {
+          consulta = query(peliculasRef, orderByChild('categoria'), startAfter(filtro, idActual), endAt(filtro), limitToFirst(tamanoLote + 1));
+        } else {
+          consulta = query(peliculasRef, orderByChild('categoria'), startAt(filtro), endAt(filtro), limitToFirst(tamanoLote + 1));
+        }
       }
-
-      // Pedimos tamanoLote + 1 para saber si hay más páginas
-      consulta = query(consulta, limitToFirst(tamanoLote + 1));
 
       // Ejecutar la petición
       const snapshot = await get(consulta);
@@ -39,11 +47,10 @@ export function useInfinitePeliculas(tamanoLote: number = 12) {
       }
 
       // Convertimos objeto de Firebase a array
-      const data = snapshot.val();
-      const listaBruta = Object.entries(data).map(([key, value]) => ({
-        id: key,
-        ...(value as PeliculaFirebase)
-      }));
+      const listaBruta: PeliculaFirebase[] = [];
+      snapshot.forEach((child) => {
+        listaBruta.push({ id: child.key as string, ...(child.val() as PeliculaFirebase) });
+      });
 
       // Comprobar si hemos traído tamanoLote + 1
       let nuevasPeliculas;
@@ -61,11 +68,14 @@ export function useInfinitePeliculas(tamanoLote: number = 12) {
       // Guardamos el ID de la nueva última película real
       if (nuevasPeliculas.length > 0) {
         const nuevaUltima = nuevasPeliculas[nuevasPeliculas.length - 1];
-        setUltimoId(nuevaUltima.id);
+        setUltimoId(nuevaUltima.id!);
       }
 
-      // Añadimos las nuevas películas al final de las actuales
-      setPeliculas(prevPeliculas => [...prevPeliculas, ...nuevasPeliculas]);
+      if (esReset) {
+        setPeliculas(nuevasPeliculas);
+      } else {
+        setPeliculas(prevPeliculas => [...prevPeliculas, ...nuevasPeliculas]);
+      }
 
     } catch (error) {
       console.error("Error cargando películas en Infinite Scroll:", error);
@@ -73,20 +83,22 @@ export function useInfinitePeliculas(tamanoLote: number = 12) {
     } finally {
       setCargando(false);
     }
-  }, [cargando, hayMas, ultimoId, tamanoLote]);
+  }, [cargando, hayMas, ultimoId, tamanoLote, filtro]);
 
-  // Cargar el primer lote automáticamente al montar el hook
+  // Cargar el primer lote automáticamente al montar el hook o cambiar de categoría
   useEffect(() => {
+    console.log(`[HOOK] Filtro cambiado a: ${filtro}. Reseteando...`);
     setPeliculas([]);
     setUltimoId(null);
     setHayMas(true);
-    cargarLote();
-  }, [tamanoLote, cargarLote]);
+    cargarLote(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tamanoLote, filtro]);
 
   return {
     peliculas,
     cargando,
-    cargarMas: cargarLote, // Exportamos la función para llamarla al hacer scroll
+    cargarMas: () => cargarLote(false),
     hayMas
   };
 }
