@@ -43,10 +43,14 @@ function RegisterForm() {
         <div className="card bg-dark text-white border-secondary shadow p-4 text-center">
           <i className="bi bi-envelope-check-fill text-success" style={{ fontSize: '3rem' }}></i>
           <h3 className="mt-3">¡Cuenta creada!</h3>
-          <p className="mt-2 text-secondary">
+          <p className="mt-2 text-secondary mb-2">
             Te hemos enviado un correo electrónico a <strong>{email}</strong>.
-           Por favor, revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.
-          <strong>IMPORTANTE: </strong>Tenemos constancia de que los correos electrónicos se están marcando como spam. Revisa la carpeta de spam si no te ha llegado.
+          </p>
+          <p className="text-secondary mb-3">
+            Por favor, revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.
+          </p>
+          <p className="text-warning small mb-0 border border-warning rounded p-2 bg-warning bg-opacity-10">
+            <strong>IMPORTANTE:</strong> Tenemos constancia de que los correos electrónicos se están marcando como spam. Revisa la carpeta de spam si no te ha llegado.
           </p>
           <Link to="/login" className="btn btn-danger mt-3 w-100">
             Ir a Iniciar Sesión
