@@ -1,31 +1,35 @@
 src/
- ├── assets/                # Imágenes locales (logo, iconos)
- ├── components/            # Componentes reutilizables
- │    ├── layout/           # Header.tsx, Footer.tsx
- │    ├── movies/           # MovieCard.tsx, MovieFilter.tsx, MovieList.tsx, CommentSection.tsx, StarRating.tsx
- │    └── auth/             # LoginForm.tsx, RegisterForm.tsx
- │
- ├── pages/                 # Las vistas completas de cada ruta
- │    ├── Home.tsx          # El Catálogo
- │    ├── MovieDetail.tsx   # La ficha de la película
- │    ├── Favorites.tsx     # Lista de favoritos
- │    ├── Contact.tsx       # Estática
- │    ├── About.tsx         # Estática
- │    └── ErrorPage.tsx     # Página 404
- │
- ├── context/               # El estado global
- │    └── AuthContext.tsx   # Para saber quién está logueado en toda la app
- │
- ├── hooks/                 # Hooks personalizados
- │    ├── useInfinitePeliculas.ts
- │    └── useMovieStats.ts
- │
- ├── types/
- │    └── index.ts
- │
- ├── config/
- │    └── firebase.ts       # Configuración y conexión con Firebase
- │
- ├── App.tsx                # Rutas principales (React Router)
- ├── main.tsx               # Punto de entrada
- └── index.css              # Estilos globales
+├── components/
+│   ├── auth/
+│   │   ├── LoginForm.tsx
+│   │   └── RegisterForm.tsx
+│   ├── layout/
+│   │   ├── Footer.test.tsx
+│   │   ├── Footer.tsx
+│   │   └── Header.tsx
+│   └── movies/
+│       ├── CommentSection.tsx
+│       ├── MovieCard.tsx
+│       ├── MovieFilter.tsx
+│       ├── MovieList.tsx
+│       └── StarRating.tsx
+├── config/
+│   └── firebase.ts
+├── context/
+│   └── AuthContext.tsx
+├── hooks/
+│   ├── useInfinitePeliculas.ts
+│   └── useMovieStats.ts
+├── pages/
+│   ├── About.tsx
+│   ├── Contact.tsx
+│   ├── ErrorPage.tsx
+│   ├── Favorites.tsx
+│   ├── Home.tsx
+│   └── MovieDetail.tsx
+├── types/
+│   └── index.ts
+├── App.tsx
+├── index.css
+├── main.tsx
+└── setupTests.ts
