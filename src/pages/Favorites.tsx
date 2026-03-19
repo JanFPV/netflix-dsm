@@ -16,6 +16,7 @@ function Favorites() {
 
   const [cargandoDB, setCargandoDB] = useState(true);
   const [cargandoTMDB, setCargandoTMDB] = useState(false);
+  const [esLista, setEsLista] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -114,12 +115,30 @@ function Favorites() {
   // Con favoritos
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Mis Películas Favoritas</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="mb-0">Mis Películas Favoritas</h2>
+        <div className="btn-group bg-dark border border-secondary rounded shadow-sm" role="group">
+          <button
+            className={`btn btn-sm px-3 ${!esLista ? 'btn-secondary text-white' : 'btn-dark text-secondary border-0'}`}
+            onClick={() => setEsLista(false)}
+            title="Vista de mosaico"
+          >
+            <i className="bi bi-grid-fill"></i>
+          </button>
+          <button
+            className={`btn btn-sm px-3 ${esLista ? 'btn-secondary text-white' : 'btn-dark text-secondary border-0'}`}
+            onClick={() => setEsLista(true)}
+            title="Vista de lista"
+          >
+            <i className="bi bi-list-ul"></i>
+          </button>
+        </div>
+      </div>
 
       <div className="row g-4 mt-2">
         {favoritosCompletos.map((peli) => (
-          <div key={peli.id} className="col-6 col-md-4 col-lg-3">
-            <MovieCard pelicula={peli} />
+          <div key={peli.id} className={esLista ? 'col-12' : 'col-6 col-md-4 col-lg-3'}>
+            <MovieCard pelicula={peli} vistaLista={esLista} />
           </div>
         ))}
       </div>
