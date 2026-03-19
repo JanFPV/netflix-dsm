@@ -17,6 +17,7 @@ function CommentSection({ movieId }: CommentSectionProps) {
   const [texto, setTexto] = useState('');
   const [rating, setRating] = useState(0);
   const [enviando, setEnviando] = useState(false);
+  const [comentarioABorrar, setComentarioABorrar] = useState<string | null>(null);
 
   // Leer comentarios
   useEffect(() => {
@@ -73,13 +74,12 @@ function CommentSection({ movieId }: CommentSectionProps) {
   };
 
   // Borrar tu propia reseña
-  const borrarComentario = async (idComentario: string) => {
-    if (window.confirm("¿Seguro que quieres borrar tu reseña?")) {
-      try {
-        await remove(ref(db, `comentarios/${movieId}/${idComentario}`));
-      } catch (error) {
-        console.error("Error al borrar:", error);
-      }
+  const ejecutarBorrado = async (idComentario: string) => {
+    try {
+      await remove(ref(db, `comentarios/${movieId}/${idComentario}`));
+      setComentarioABorrar(null);
+    } catch (error) {
+      console.error("Error al borrar:", error);
     }
   };
 
@@ -110,7 +110,7 @@ function CommentSection({ movieId }: CommentSectionProps) {
             <div className="mb-3">
               <input
                 type="text"
-                className="form-control bg-secondary text-white border-0"
+                className="form-control bg-secondary text-white bg-transparent border-1"
                 placeholder="¿Qué te ha parecido la película? (Opcional)"
                 value={texto}
                 onChange={(e) => setTexto(e.target.value)}
@@ -134,29 +134,46 @@ function CommentSection({ movieId }: CommentSectionProps) {
           <p className="text-muted">No hay reseñas todavía. ¡Sé el primero en opinar!</p>
         ) : (
           comentarios.map((c) => (
-            <div key={c.id} className="bg-dark p-3 rounded border border-secondary position-relative">
-
-              {/* Botón de borrar */}
-              {c.usuario_id === user?.uid && (
-                <button
-                  onClick={() => borrarComentario(c.id)}
-                  className="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-2 border-0"
-                  title="Borrar mi reseña"
-                >
-                  <i className="bi bi-trash3-fill"></i>
-                </button>
-              )}
-
-              <div className="d-flex justify-content-between align-items-center mb-2 pe-4">
-                <div className="d-flex align-items-center gap-2">
-                  <span className="fw-bold text-white">@{c.alias}</span>
-                  <StarRating rating={c.rating} tamaño="sm" />
+            <div key={c.id} className="bg-dark p-3 rounded border border-secondary position-relative overflow-hidden">
+              {comentarioABorrar === c.id ? (
+                <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 py-1">
+                  <span className="text-warning fw-bold">
+                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                    ¿Seguro que quieres borrar tu reseña?
+                  </span>
+                  <div className="d-flex gap-2">
+                    <button onClick={() => setComentarioABorrar(null)} className="btn btn-sm btn-outline-light fw-bold">
+                      Cancelar
+                    </button>
+                    <button onClick={() => ejecutarBorrado(c.id)} className="btn btn-sm btn-danger fw-bold">
+                      Sí, borrar
+                    </button>
+                  </div>
                 </div>
-                <span className="text-muted small d-none d-sm-inline">
-                  {new Date(c.fecha).toLocaleDateString()}
-                </span>
-              </div>
-              {c.comentario && <p className="mb-0 text-light">{c.comentario}</p>}
+              ) : (
+                <>
+                  {c.usuario_id === user?.uid && (
+                    <button
+                      onClick={() => setComentarioABorrar(c.id)}
+                      className="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-2 border-0"
+                      title="Borrar mi reseña"
+                    >
+                      <i className="bi bi-trash3-fill"></i>
+                    </button>
+                  )}
+
+                  <div className="d-flex justify-content-between align-items-center mb-2 pe-4">
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="fw-bold text-white">@{c.alias}</span>
+                      <StarRating rating={c.rating} tamaño="sm" />
+                    </div>
+                    <span className="text-muted small d-none d-sm-inline">
+                      {new Date(c.fecha).toLocaleDateString('es-ES')}
+                    </span>
+                  </div>
+                  {c.comentario && <p className="mb-0 text-light">{c.comentario}</p>}
+                </>
+              )}
             </div>
           ))
         )}

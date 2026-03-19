@@ -7,9 +7,10 @@ import type { Pelicula, PeliculaTMDB } from '../../types';
 
 interface MovieListProps {
   filtro: string;
+  esLista: boolean;
 }
 
-function MovieList({ filtro }: MovieListProps) {
+function MovieList({ filtro, esLista }: MovieListProps) {
   // Llamar al Hook (pide en lotes de 12)
   const {
     peliculas: peliculasFirebase,
@@ -102,8 +103,8 @@ function MovieList({ filtro }: MovieListProps) {
           <h5 className="text-secondary mt-4">No hay películas de {filtro} todavía.</h5>
         ) : (
           peliculasCompletas.map((peli) => (
-            <div key={peli.id} className="col-6 col-md-4 col-lg-3">
-              <MovieCard pelicula={peli} />
+            <div key={peli.id} className={esLista ? 'col-12' : 'col-6 col-md-4 col-lg-3'}>
+              <MovieCard pelicula={peli} vistaLista={esLista} />
             </div>
           ))
         )}
