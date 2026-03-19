@@ -153,7 +153,7 @@ function CommentSection({ movieId }: CommentSectionProps) {
                   <StarRating rating={c.rating} tamaño="sm" />
                 </div>
                 <span className="text-muted small d-none d-sm-inline">
-                  {new Date(c.fecha).toLocaleDateString()}
+                  {new Date(c.fecha).toLocaleDateString('es-ES')}
                 </span>
               </div>
               {c.comentario && <p className="mb-0 text-light">{c.comentario}</p>}
