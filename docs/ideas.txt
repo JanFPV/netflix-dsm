@@ -4,6 +4,7 @@ Nuevas funcionales implementadas:
     - Testing automatizado en Github Actions
     - Despliegue automatizado en Firebase con Actions al hacer push
     - Implementación en Typescript
+    - Botón de busqueda y buscador en tiempo real
     - Página de error
     - La barra de arriba cambia si estas logueado o no
     - Desplegable para cerrar sesión en el usuario
@@ -12,7 +13,6 @@ Nuevas funcionales implementadas:
 Por hacer:
     - Al volver no solo volver a la misma pagina sino mantener posición de scroll y categoría
     - Añadir un "ordenar por" en las pelis
-    - Botón de busqueda y buscador en tiempo real
     - Poner webapp en varios idiomas (EUS/EN) pero de manera elegante
     - Botón para togglear modo lista o mosaico
     - Pensar alguna idea de radarr/sonarr/jellyfin

@@ -18,7 +18,7 @@ function Home() {
             setCategoria={setCategoriaActiva}
           />
         </div>
-        <div className="btn-group bg-dark border border-secondary rounded shadow-sm flex-shrink-0" role="group">
+        <div className="btn-group bg-dark border border-secondary rounded shadow-sm flex-shrink-0 d-none d-md-flex" role="group">
           <button
             className={`btn btn-sm px-3 ${!esLista ? 'btn-secondary text-white' : 'btn-dark text-secondary border-0'}`}
             onClick={() => setEsLista(false)}

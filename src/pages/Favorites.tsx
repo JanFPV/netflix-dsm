@@ -117,7 +117,7 @@ function Favorites() {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0">Mis Películas Favoritas</h2>
-        <div className="btn-group bg-dark border border-secondary rounded shadow-sm" role="group">
+        <div className="btn-group bg-dark border border-secondary rounded shadow-sm d-none d-md-flex" role="group">
           <button
             className={`btn btn-sm px-3 ${!esLista ? 'btn-secondary text-white' : 'btn-dark text-secondary border-0'}`}
             onClick={() => setEsLista(false)}

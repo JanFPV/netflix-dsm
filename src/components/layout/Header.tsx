@@ -1,5 +1,6 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import SearchBar from './SearchBar';
 
 function Header() {
   const { user, logout } = useAuth();
@@ -19,7 +20,7 @@ function Header() {
         <Link className="navbar-brand d-flex align-items-center" to="/">
           <img
             src="/logo.png"
-            alt="DSM-flix"
+            alt="Netflix-DSM"
             height="50"
             className="d-inline-block align-top"
           />
@@ -44,6 +45,8 @@ function Header() {
               <NavLink className="nav-link" to="/contacto">Contacto</NavLink>
             </li>
           </ul>
+
+          <SearchBar />
 
           <div className="d-flex align-items-center">
             {user ? (

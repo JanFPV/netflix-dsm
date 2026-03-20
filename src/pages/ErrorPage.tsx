@@ -9,7 +9,7 @@ function ErrorPage() {
         No encontramos la página que estás buscando. Hay mucho más para explorar en la página de inicio.
       </p>
       <Link to="/" className="btn btn-danger btn-lg fw-bold px-4 py-2">
-        Inicio de DSM-flix
+        Inicio de Netflix-DSM
       </Link>
     </div>
   );
