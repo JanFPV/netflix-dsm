@@ -14,7 +14,7 @@ export function useInfinitePeliculas(tamanoLote: number = 12, filtro: string = '
 
     if (cargando || !hayMasActual) return;
 
-    console.log(`[FIREBASE] Pidiendo 12 películas. Filtro: ${filtro}. ID: ${idActual || 'el principio'}`);
+    // console.log(`[FIREBASE] Pidiendo 12 películas. Filtro: ${filtro}. ID: ${idActual || 'el principio'}`);
     setCargando(true);
     try {
       // Referencia base a peliculas
@@ -87,7 +87,7 @@ export function useInfinitePeliculas(tamanoLote: number = 12, filtro: string = '
 
   // Cargar el primer lote automáticamente al montar el hook o cambiar de categoría
   useEffect(() => {
-    console.log(`[HOOK] Filtro cambiado a: ${filtro}. Reseteando...`);
+    // console.log(`[HOOK] Filtro cambiado a: ${filtro}. Reseteando...`);
     setPeliculas([]);
     setUltimoId(null);
     setHayMas(true);
