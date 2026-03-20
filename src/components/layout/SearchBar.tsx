@@ -56,7 +56,7 @@ function SearchBar() {
     const timer = setTimeout(async () => {
       setBuscando(true);
       try {
-        console.log(`[BUSCADOR] Buscando en TMDB: "${termino}"`);
+        // console.log(`[BUSCADOR] Buscando en TMDB: "${termino}"`);
         const res = await axios.get(
           `https://api.themoviedb.org/3/search/movie?query=${termino}&language=es-ES&api_key=${import.meta.env.VITE_TMDB_API_KEY}`
         );
@@ -70,7 +70,7 @@ function SearchBar() {
             year: peliTMDB.release_date ? peliTMDB.release_date.substring(0, 4) : ''
           }));
 
-        console.log(`[BUSCADOR] Coincidencias encontradas: ${coincidencias.length}`);
+        // console.log(`[BUSCADOR] Coincidencias encontradas: ${coincidencias.length}`);
 
         setResultados(coincidencias);
         setMostrar(true);
