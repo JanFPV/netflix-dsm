@@ -109,7 +109,7 @@ function SearchBar() {
         <input
           type="text"
           className="form-control bg-dark text-white border-secondary shadow-none"
-          placeholder="Títulos, personas, géneros..."
+          placeholder="Título de la película..."
           value={termino}
           onChange={(e) => {
             setTermino(e.target.value);
