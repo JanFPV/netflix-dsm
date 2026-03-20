@@ -14,7 +14,7 @@ describe('Componente Footer', () => {
     );
 
     // Verificar que el texto este presente
-    const textoCopyright = screen.getByText(/DSM-flix. Hecho en React./i);
+    const textoCopyright = screen.getByText(/Netflix-DSM. Hecho en React./i);
     expect(textoCopyright).toBeInTheDocument();
   });
 });

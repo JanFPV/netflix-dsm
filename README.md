@@ -1,4 +1,4 @@
-# DSM-flix
+# Netflix-DSM
 
 Proyecto de Despliegue de Servicios Multimedia (work in progress).
 

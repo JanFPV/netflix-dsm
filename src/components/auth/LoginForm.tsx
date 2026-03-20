@@ -76,7 +76,7 @@ function LoginForm() {
       </button>
       </form>
       <div className="text-center mt-4">
-        <span className="text-secondary">¿Primera vez en DSM-flix? </span>
+        <span className="text-secondary">¿Primera vez en Netflix-DSM? </span>
         <Link to="/register" className="text-white fw-bold text-decoration-none">
           Crea tu cuenta.
         </Link>
